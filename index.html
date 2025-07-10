@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skrining Risiko Bunuh Diri</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question p {
+      margin: 10px 0;
+      font-weight: 500;
+    }
+    label {
+      margin-right: 15px;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .low { background-color: #d4edda; color: #155724; }
+    .moderate { background-color: #fff3cd; color: #856404; }
+    .high { background-color: #f8d7da; color: #721c24; }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Skrining Risiko Bunuh Diri</h2>
+    <form id="screeningForm">
+      <div class="question">
+        <p>1. Apakah Anda pernah berharap bisa mati atau berharap bisa tidur dan tidak bangun lagi?</p>
+        <label><input type="radio" name="q1" value="1" required /> Ya</label>
+        <label><input type="radio" name="q1" value="0" /> Tidak</label>
+      </div>
+      <div class="question">
+        <p>2. Apakah Anda pernah memiliki pikiran untuk bunuh diri, bahkan jika Anda tidak akan benar-benar melakukannya?</p>
+        <label><input type="radio" name="q2" value="1" required /> Ya</label>
+        <label><input type="radio" name="q2" value="0" /> Tidak</label>
+      </div>
+      <div class="question">
+        <p>3. Apakah Anda pernah memikirkan cara untuk bunuh diri (misalnya, minum obat, gantung diri, lompat dari ketinggian)?</p>
+        <label><input type="radio" name="q3" value="1" required /> Ya</label>
+        <label><input type="radio" name="q3" value="0" /> Tidak</label>
+      </div>
+      <div class="question">
+        <p>4. Apakah Anda pernah memiliki niat untuk melakukan bunuh diri, artinya Anda berpikir untuk benar-benar melakukannya?</p>
+        <label><input type="radio" name="q4" value="1" required /> Ya</label>
+        <label><input type="radio" name="q4" value="0" /> Tidak</label>
+      </div>
+      <div class="question">
+        <p>5. Apakah Anda pernah melakukan sesuatu, mulai menyusun rencana, atau mengambil langkah untuk bunuh diri?</p>
+        <label><input type="radio" name="q5" value="1" required /> Ya</label>
+        <label><input type="radio" name="q5" value="0" /> Tidak</label>
+      </div>
+      <button type="button" onclick="calculateRisk()">Lihat Hasil Skrining</button>
+    </form>
+    <div id="resultBox" class="result" style="display: none;"></div>
+  </div>
+
+  <script>
+    function calculateRisk() {
+      const form = document.getElementById('screeningForm');
+      const resultBox = document.getElementById('resultBox');
+      const formData = new FormData(form);
+      let score = 0;
+
+      for (let [key, value] of formData.entries()) {
+        score += parseInt(value);
+      }
+
+      let resultText = "";
+      let cssClass = "";
+
+      if (score === 0) {
+        resultText = "Tidak terdeteksi risiko bunuh diri. Tetap jaga kesehatan mental Anda.";
+        cssClass = "low";
+      } else if (score >= 1 && score <= 2) {
+        resultText = "Risiko <strong>ringan</strong> bunuh diri terdeteksi. Sebaiknya konsultasikan dengan tenaga kesehatan mental.";
+        cssClass = "low";
+      } else if (score === 3 || score === 4) {
+        resultText = "Risiko <strong>sedang</strong> bunuh diri terdeteksi. Konsultasi dengan psikolog atau psikiater sangat disarankan.";
+        cssClass = "moderate";
+      } else if (score === 5) {
+        resultText = "Risiko <strong>berat</strong> bunuh diri terdeteksi. Segera cari bantuan profesional dan dukungan dari orang terdekat.";
+        cssClass = "high";
+      }
+
+      resultBox.className = `result ${cssClass}`;
+      resultBox.innerHTML = `
+        <p>Skor Anda: <strong>${score}</strong> dari 5</p>
+        <p>${resultText}</p>
+        <p><em>Jika Anda merasa dalam kondisi darurat, segera hubungi layanan darurat atau orang terpercaya.</em></p>
+      `;
+      resultBox.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
